@@ -3,6 +3,7 @@ import cors from "cors";
 import { logger } from "./Middlewares/logger";
 import { errorHandler } from "./Middlewares/errorHandler";
 import catalogRoutes from "./Modules/catalog/catalog.routes";
+import cartRoutes from "./Modules/Carts/cart.routes";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/catalog", catalogRoutes);
+app.use("/api/cart", cartRoutes);
 app.use(errorHandler);
 
 export default app;

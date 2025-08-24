@@ -1,15 +1,16 @@
 {
   "name": "ecommerce-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "E-commerce backend with Express, TypeScript, MongoDB",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",

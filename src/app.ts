@@ -12,14 +12,16 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 
-// Routes
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to the E-commerce API!" });
+});
+
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/promos", promoRoutes);
 app.use("/checkout", checkoutRoutes);
 app.use("/orders", orderRoutes);
 
-// Error Handler
 app.use(errorHandler);
 
 export default app;

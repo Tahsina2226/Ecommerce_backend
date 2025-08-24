@@ -72,7 +72,7 @@ const runSeeder = async () => {
       items: [
         {
           productId: products[0]._id,
-          variantId: (products[0].variants[0] as any)._id, // cast as any because schema has no _id type
+          variantId: (products[0].variants[0] as any)._id,
           quantity: 2,
         },
         {

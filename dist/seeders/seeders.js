@@ -21,12 +21,10 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ecommerce"
 const runSeeder = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mongoose_1.default.connect(MONGO_URI);
-        console.log("MongoDB connected");
         yield catalog_model_1.Product.deleteMany({});
         yield promo_model_1.Promo.deleteMany({});
         yield Cart_model_1.Cart.deleteMany({});
         yield order_model_1.Order.deleteMany({});
-        console.log("Existing data cleared");
         const products = yield catalog_model_1.Product.insertMany([
             {
                 title: "T-Shirt",
@@ -54,7 +52,6 @@ const runSeeder = () => __awaiter(void 0, void 0, void 0, function* () {
                 ],
             },
         ]);
-        console.log("Products seeded");
         yield promo_model_1.Promo.insertMany([
             {
                 code: "SUMMER10",
@@ -71,8 +68,6 @@ const runSeeder = () => __awaiter(void 0, void 0, void 0, function* () {
                 validTo: new Date("2025-12-31"),
             },
         ]);
-        console.log("Promos seeded");
-        // Create guest cart
         const cart = new Cart_model_1.Cart({
             token: "guest-token-123",
             items: [
@@ -89,7 +84,6 @@ const runSeeder = () => __awaiter(void 0, void 0, void 0, function* () {
             ],
         });
         yield cart.save();
-        console.log("Cart seeded");
         const subtotal = products[0].variants[0].price * 2 +
             products[1].variants[1].price * 1;
         const discount = 5;
@@ -111,13 +105,13 @@ const runSeeder = () => __awaiter(void 0, void 0, void 0, function* () {
             total,
             status: "pending",
         });
-        console.log("Orders seeded");
-        console.log("Seeder finished successfully");
-        process.exit(0);
     }
     catch (error) {
-        console.error("Seeder failed:", error);
-        process.exit(1);
+        console.error(error);
+    }
+    finally {
+        yield mongoose_1.default.disconnect();
+        process.exit(0);
     }
 });
 runSeeder();

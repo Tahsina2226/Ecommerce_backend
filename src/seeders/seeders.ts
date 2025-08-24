@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { Product } from "../Modules/catalog/catalog.model";
 import { Promo } from "../Modules/promo/promo.model";
 import { Cart } from "../Modules/Carts/Cart.model";
@@ -10,13 +10,11 @@ const MONGO_URI =
 const runSeeder = async () => {
   try {
     await mongoose.connect(MONGO_URI);
-    console.log("MongoDB connected");
 
     await Product.deleteMany({});
     await Promo.deleteMany({});
     await Cart.deleteMany({});
     await Order.deleteMany({});
-    console.log("Existing data cleared");
 
     const products = await Product.insertMany([
       {
@@ -46,8 +44,6 @@ const runSeeder = async () => {
       },
     ]);
 
-    console.log("Products seeded");
-
     await Promo.insertMany([
       {
         code: "SUMMER10",
@@ -65,8 +61,6 @@ const runSeeder = async () => {
       },
     ]);
 
-    console.log("Promos seeded");
-
     const cart = new Cart({
       token: "guest-token-123",
       items: [
@@ -82,9 +76,7 @@ const runSeeder = async () => {
         },
       ],
     });
-
     await cart.save();
-    console.log("Cart seeded");
 
     const subtotal =
       (products[0].variants[0].price as number) * 2 +
@@ -111,13 +103,11 @@ const runSeeder = async () => {
       total,
       status: "pending",
     });
-
-    console.log("Orders seeded");
-    console.log("Seeder finished successfully");
-    process.exit(0);
   } catch (error) {
-    console.error("Seeder failed:", error);
-    process.exit(1);
+    console.error(error);
+  } finally {
+    await mongoose.disconnect();
+    process.exit(0);
   }
 };
 

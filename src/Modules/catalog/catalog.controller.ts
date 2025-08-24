@@ -1,21 +1,19 @@
 import { Request, Response } from "express";
-import { Product } from "../product/product.model";
+import { Product } from "./catalog.model";
 
-export const getAllProducts = async (req: Request, res: Response) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch products" });
-  }
+export const getProducts = async (_req: Request, res: Response) => {
+  const products = await Product.find();
+  res.json(products);
 };
 
-export const getProductById = async (req: Request, res: Response) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ error: "Product not found" });
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch product" });
-  }
+export const getProduct = async (req: Request, res: Response) => {
+  const product = await Product.findById(req.params.id);
+  if (!product) return res.status(404).json({ message: "Product not found" });
+  res.json(product);
+};
+
+export const createProduct = async (req: Request, res: Response) => {
+  const product = new Product(req.body);
+  await product.save();
+  res.status(201).json(product);
 };

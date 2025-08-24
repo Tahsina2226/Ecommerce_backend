@@ -1,22 +1,25 @@
 import express from "express";
-import cors from "cors";
-import { logger } from "./Middlewares/logger";
-import { errorHandler } from "./Middlewares/errorHandler";
-import catalogRoutes from "./Modules/catalog/catalog.routes";
+import productRoutes from "./Modules/catalog/catalog.routes";
 import cartRoutes from "./Modules/Carts/cart.routes";
+import promoRoutes from "./Modules/promo/promo.route";
+import checkoutRoutes from "./Modules/checkout/checkout.route";
+import orderRoutes from "./Modules/order/order.route";
+import { errorHandler } from "./Middlewares/errorHandler";
+import morgan from "morgan";
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
-app.use(logger);
+app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+// Routes
+app.use("/products", productRoutes);
+app.use("/cart", cartRoutes);
+app.use("/promos", promoRoutes);
+app.use("/checkout", checkoutRoutes);
+app.use("/orders", orderRoutes);
 
-app.use("/api/catalog", catalogRoutes);
-app.use("/api/cart", cartRoutes);
+// Error Handler
 app.use(errorHandler);
 
 export default app;

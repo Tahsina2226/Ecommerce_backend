@@ -6,7 +6,7 @@ const VariantSchema = new Schema({
 });
 
 const ProductSchema = new Schema({
-  name: { type: String, required: true },
+  title: { type: String, required: true },
   description: String,
   variants: [VariantSchema],
   createdAt: { type: Date, default: Date.now },
